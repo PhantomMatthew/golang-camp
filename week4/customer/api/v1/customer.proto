@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package api.customer;
+
+import "google/api/annotations.proto";
+
+option go_package = "customer/api/customer;customer";
+option java_multiple_files = true;
+option java_package = "api.customer";
+
+service Customer {
+	rpc CreateCustomer (CreateCustomerRequest) returns (CreateCustomerReply);
+	rpc UpdateCustomer (UpdateCustomerRequest) returns (UpdateCustomerReply);
+	rpc DeleteCustomer (DeleteCustomerRequest) returns (DeleteCustomerReply);
+	rpc GetCustomer (GetCustomerRequest) returns (GetCustomerReply) {
+		option (google.api.http) = {
+			get: "/customer/{id}"
+		};
+	};
+	rpc ListCustomer (ListCustomerRequest) returns (ListCustomerReply);
+}
+
+message CreateCustomerRequest {}
+message CreateCustomerReply {}
+
+message UpdateCustomerRequest {}
+message UpdateCustomerReply {}
+
+message DeleteCustomerRequest {}
+message DeleteCustomerReply {}
+
+message GetCustomerRequest {
+	string id = 1;
+}
+message GetCustomerReply {
+	string message = 1;
+}
+
+message ListCustomerRequest {}
+message ListCustomerReply {}

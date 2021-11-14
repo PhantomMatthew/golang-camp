@@ -1,3 +1,8 @@
+# Use Kratos to build sample customer service
+http://localhost:8000/customer/f34238942347 to simulate /customer/{id}
+
+After check biz (business layer) data (dao layer) service & server code, run [wire] under /cmd/customer to generate inject code.
+
 # Kratos Project Template
 
 ## Install Kratos

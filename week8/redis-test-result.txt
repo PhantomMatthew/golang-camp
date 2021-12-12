@@ -1,0 +1,383 @@
+Set写入会随着Value变大，时间增加
+Get读取与Value大小关系不大
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 10 -q
+SET: 88339.23 requests per second, p50=0.287 msec
+GET: 84602.37 requests per second, p50=0.303 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 20 -q
+SET: 84817.64 requests per second, p50=0.295 msec
+GET: 85178.88 requests per second, p50=0.295 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 50 -q
+SET: 85984.52 requests per second, p50=0.295 msec
+GET: 84033.61 requests per second, p50=0.303 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 100 -q
+SET: 85543.20 requests per second, p50=0.295 msec
+GET: 83752.09 requests per second, p50=0.303 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 200 -q
+SET: 85616.44 requests per second, p50=0.295 msec
+GET: 89847.26 requests per second, p50=0.279 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 1024 -q
+SET: 82712.98 requests per second, p50=0.311 msec
+GET: 92506.94 requests per second, p50=0.279 msec
+
+root@18abdb3dae9a:/data# redis-benchmark -t set,get -d 5120 -q
+SET: 78125.00 requests per second, p50=0.327 msec
+GET: 85836.91 requests per second, p50=0.295 msec
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+内存占用随Value大小增加，但非线性
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 10 -t set -q
+SET: 92850.51 requests per second, p50=0.279 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:13641904
+used_memory_human:13.01M
+used_memory_rss:84578304
+used_memory_rss_human:80.66M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:2.18%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:7762752
+used_memory_dataset_perc:60.50%
+allocator_allocated:14090616
+allocator_active:49065984
+allocator_resident:82427904
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:3.48
+allocator_frag_bytes:34975368
+allocator_rss_ratio:1.68
+allocator_rss_bytes:33361920
+rss_overhead_ratio:1.03
+rss_overhead_bytes:2150400
+mem_fragmentation_ratio:6.22
+mem_fragmentation_bytes:70977424
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 20 -t set -q
+SET: 92165.90 requests per second, p50=0.279 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:18841528
+used_memory_human:17.97M
+used_memory_rss:111349760
+used_memory_rss_human:106.19M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:3.01%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:12962376
+used_memory_dataset_perc:71.89%
+allocator_allocated:19360544
+allocator_active:66736128
+allocator_resident:109023232
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:3.45
+allocator_frag_bytes:47375584
+allocator_rss_ratio:1.63
+allocator_rss_bytes:42287104
+rss_overhead_ratio:1.02
+rss_overhead_bytes:2326528
+mem_fragmentation_ratio:5.92
+mem_fragmentation_bytes:92549256
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 50 -t set -q
+SET: 98911.96 requests per second, p50=0.255 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:32120336
+used_memory_human:30.63M
+used_memory_rss:170606592
+used_memory_rss_human:162.70M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:5.13%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:26241184
+used_memory_dataset_perc:83.81%
+allocator_allocated:32588728
+allocator_active:101584896
+allocator_resident:168394752
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:3.12
+allocator_frag_bytes:68996168
+allocator_rss_ratio:1.66
+allocator_rss_bytes:66809856
+rss_overhead_ratio:1.01
+rss_overhead_bytes:2211840
+mem_fragmentation_ratio:5.32
+mem_fragmentation_bytes:138527280
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 100 -t set -q
+SET: 97751.71 requests per second, p50=0.255 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:62415856
+used_memory_human:59.52M
+used_memory_rss:279416832
+used_memory_rss_human:266.47M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:9.97%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:56536704
+used_memory_dataset_perc:91.77%
+allocator_allocated:62985248
+allocator_active:162885632
+allocator_resident:277176320
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:2.59
+allocator_frag_bytes:99900384
+allocator_rss_ratio:1.70
+allocator_rss_bytes:114290688
+rss_overhead_ratio:1.01
+rss_overhead_bytes:2240512
+mem_fragmentation_ratio:4.48
+mem_fragmentation_bytes:217042000
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 200 -t set -q
+SET: 100000.00 requests per second, p50=0.255 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:135484800
+used_memory_human:129.21M
+used_memory_rss:365162496
+used_memory_rss_human:348.25M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:21.65%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:129605648
+used_memory_dataset_perc:96.24%
+allocator_allocated:136007368
+allocator_active:258404352
+allocator_resident:360669184
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:1.90
+allocator_frag_bytes:122396984
+allocator_rss_ratio:1.40
+allocator_rss_bytes:102264832
+rss_overhead_ratio:1.01
+rss_overhead_bytes:4493312
+mem_fragmentation_ratio:2.70
+mem_fragmentation_bytes:229718720
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit
+
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 1024 -t set -q
+SET: 107181.13 requests per second, p50=0.231 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:315583952
+used_memory_human:300.96M
+used_memory_rss:487882752
+used_memory_rss_human:465.28M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:50.43%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:309704800
+used_memory_dataset_perc:98.39%
+allocator_allocated:316134632
+allocator_active:460058624
+allocator_resident:483053568
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:1.46
+allocator_frag_bytes:143923992
+allocator_rss_ratio:1.05
+allocator_rss_bytes:22994944
+rss_overhead_ratio:1.01
+rss_overhead_bytes:4829184
+mem_fragmentation_ratio:1.55
+mem_fragmentation_bytes:172339824
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit
+
+
+
+root@18abdb3dae9a:/data# redis-benchmark -r 100000 -d 5120 -t set -q
+SET: 96993.21 requests per second, p50=0.263 msec
+
+root@18abdb3dae9a:/data# redis-cli
+127.0.0.1:6379> info memory
+# Memory
+used_memory:622710080
+used_memory_human:593.86M
+used_memory_rss:642482176
+used_memory_rss_human:612.72M
+used_memory_peak:625744352
+used_memory_peak_human:596.76M
+used_memory_peak_perc:99.52%
+used_memory_overhead:5879152
+used_memory_startup:809880
+used_memory_dataset:616830928
+used_memory_dataset_perc:99.18%
+allocator_allocated:623168696
+allocator_active:623845376
+allocator_resident:639930368
+total_system_memory:53635469312
+total_system_memory_human:49.95G
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:1.00
+allocator_frag_bytes:676680
+allocator_rss_ratio:1.03
+allocator_rss_bytes:16084992
+rss_overhead_ratio:1.00
+rss_overhead_bytes:2551808
+mem_fragmentation_ratio:1.03
+mem_fragmentation_bytes:19813120
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20496
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+127.0.0.1:6379> exit

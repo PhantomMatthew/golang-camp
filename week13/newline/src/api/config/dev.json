@@ -107,8 +107,8 @@
   },
   "services_host":{
     "member": "",
-    "wechat": "http://121.40.197.16:8004",
-    "svc": "http://121.40.197.16:3003"
+    "wechat": ":8004",
+    "svc": ":3003"
   },
   "registry": {
     "type": "consul",

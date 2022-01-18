@@ -1,0 +1,34 @@
+basePath: /
+definitions:
+  models.Response:
+    properties:
+      data:
+        type: object
+      message:
+        type: string
+      result:
+        type: integer
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /users/:
+    get:
+      operationId: UsersInfo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 所有用户信息
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,592 @@
+syntax = "proto3";
+
+package go.micro.service.customer;
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+service Customer {
+  // 获取客户公众号渠道客户信息
+  rpc GetCustPaInfo(GetCustInfoReq) returns(GetCustPaInfoRsp);
+  // 获取电商渠道客户信息
+  rpc GetCustEmInfo(GetCustInfoReq) returns(GetCustEmInfoRsp);
+  // 获取会员中心渠道客户信息
+  rpc GetCustMbInfo(GetCustInfoReq) returns(GetCustMbInfoRsp);
+  // 获取店长助手渠道客户信息
+  rpc GetCustDzInfo(GetCustInfoReq) returns(GetCustDzInfoRsp);
+  // 获取客户订单列表
+  rpc GetCustOrderRecords(GetCustOrderRecordsReq) returns(GetCustOrderRecordsRsp);
+  // 获取客户行为列表
+  rpc GetCustActionRecords(GetCustActionRecordsReq) returns(GetCustActionRecordsRsp);
+  // 获取客户扫码列表
+  rpc GetCustScanRecords(GetCustScanRecordsReq) returns(GetCustScanRecordsRsp);
+  // 同步其他渠道历史消息
+  rpc SyncHistoryInfo(SyncHistoryInfoReq) returns(SyncHistoryInfoRsp);
+  // 初始化用户行为
+  rpc InitialActions(InitialActionsReq) returns(SyncHistoryInfoRsp);
+  // 获取客户归属历史
+  rpc GetCustSalesOwnerHistory(GetCustSalesOwnerHistoryReq) returns(GetCustSalesOwnerHistoryRsp);
+  // 更新客户归属负责人
+  rpc SetCustSalesOwner(SetCustSalesOwnerReq) returns(SetCustSalesOwnerRsp);
+  // 搜索电商渠道客户信息列表
+  rpc SearchCustEmInfoList(SearchCustEmInfoListReq) returns(SearchCustEmInfoListRsp);
+  // 搜索公众号客户信息列表
+//  rpc SearchCustPaInfoList(SearchCustPaInfoListReq) returns(SearchCustPaInfoListRsp);
+  // 提供指定客户渠道账户视图服务
+  rpc GetCustChannelInfo(GetCustInfoReq) returns(GetCustChannelInfoRsp);
+  // 提供客户基础信息服务
+  rpc GetCustBasicInfo(GetCustInfoReq) returns(GetCustBasicInfoRsp);
+
+//  // 搜索客户售后订单服务
+ rpc SearchCustRefundOrderRecords(SearchCustRefundOrderRecordsReq) returns(SearchCustRefundOrderRecordsRsp);
+//  // 搜索客户订单列表
+ rpc SearchCustOrderRecords(SearchCustOrderRecordsReq) returns(SearchCustOrderRecordsRsp);
+  // 获取业绩售后订单服务
+  rpc GetPerformanceCustRefundOrderRecords(GetPerformanceOrderRecordsReq) returns(GetPerformanceRefundOrderRecordsRsp);
+  // 获取业绩订单列表
+  rpc GetPerformanceCustOrderRecords(GetPerformanceOrderRecordsReq) returns(GetPerformanceOrderRecordsRsp);
+  // 获取业绩订单统计
+  rpc GetPerformanceSumData(GetPerformanceOrderRecordsReq) returns(GetPerformanceSumDataRsp);
+//  // 获取客户售后单详情
+//  rpc GetCustOrderRefundDetail(GetCustOrderRefundDetailReq) returns(GetCustOrderRefundDetailRsp);
+//  // 获取客户订单详情
+//  rpc GetCustOrderDetail(GetCustOrderDetailReq) returns(GetCustOrderDetailRsp);
+
+  // 更新业绩归属人
+  rpc ModifyPerformanceOrderOwner (ModifyPerformanceOrderOwnerReq) returns(ModifyPerformanceOrderOwnerRsp);
+
+}
+
+message ModelPage {
+  int32 num = 1;
+  int32 size = 2;
+  int32 count = 3;
+}
+
+message GetCustInfoReq{
+  uint32 cust_id = 1;
+  string union_id = 2;
+}
+
+message InitialActionsReq{
+}
+
+message SyncHistoryInfoReq{
+  string last_oid = 1;
+  int32 page_size = 2;
+  string start_date = 3;
+  string end_date = 4;
+  string tasks = 5;
+}
+
+
+
+message GetCustPaInfoRsp{
+  string pa_open_id = 1 ;
+  bool pa_subscribed = 2 ;
+  string pa_head_image_url = 3 ;
+  string pa_nick_name = 4 ;
+  int32 pa_sex = 5 ;
+  string pa_country = 6 ;
+  string pa_city = 7 ;
+  string pa_province = 8 ;
+  string pa_remark = 9 ;
+  string pa_language = 10 ;
+  google.protobuf.Timestamp pa_unsubscribe_time = 11 ;
+  string pa_first_subscibe_scene = 12 ;
+  string pa_first_subscirbe_scene_id = 13 ;
+  google.protobuf.Timestamp pa_first_subscribe_time = 14 ;
+  google.protobuf.Timestamp pa_last_subscribe_time = 15 ;
+  string pa_last_subscribe_scene = 16 ;
+  string pa_last_subscribe_scene_id = 17 ;
+  string union_id = 18;
+  uint32 cust_id = 19 ;
+}
+message SearchCustEmInfoListReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  string phone = 3;
+  string nick_name = 4;
+  int32 dz_owner_account_id = 6;
+  string dz_owner_account_name = 7;
+}
+message SearchCustEmInfoListRsp{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string em_register_phone = 1;
+    string em_account_id = 2;
+    google.protobuf.Timestamp em_birthday = 3;
+    int32 em_gender = 4;
+    string em_contact_city = 5;
+    string em_contact_province = 6;
+    string em_contact_county = 7;
+    string em_contact_address = 8;
+    int32 em_contact_area_code = 9;
+    string em_avatar = 10;
+    string em_name = 11;
+    string em_remark = 12;
+    string union_id = 13;
+    string em_weixin_open_id = 14;
+    string em_user_id = 15;
+    string em_yz_open_id = 16;
+    int32 em_growth = 17;
+    int32 em_points = 18;
+    int32 em_traded_num = 19;
+    float em_traded_money = 20;
+    bool em_is_member = 21;
+    uint32 cust_id = 22;
+    int32 dz_owner_account_id = 23;
+    string dz_owner_account_name = 24;
+  }
+}
+message SearchCustPaInfoListReq{
+  string open_id = 1;
+  string union_id = 2;
+  string phone = 3;
+  string nick_name = 4;
+  string subscribe_time = 5;
+  int32 dz_owner_account_id = 6;
+  string dz_owner_account_name = 7;
+  bool em_is_member = 8;
+}
+
+message SearchCustPaInfoListRsp{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 total = 3;
+  repeated List list = 4;
+  message  List{
+    string pa_open_id = 1 ;
+    bool pa_subscribed = 2 ;
+    string pa_head_image_url = 3 ;
+    string pa_nick_name = 4 ;
+    int32 pa_sex = 5 ;
+    string pa_country = 6 ;
+    string pa_city = 7 ;
+    string pa_province = 8 ;
+    string pa_remark = 9 ;
+    string pa_language = 10 ;
+    google.protobuf.Timestamp pa_unsubscribe_time = 11 ;
+    string pa_first_subscibe_scene = 12 ;
+    string pa_first_subscirbe_scene_id = 13 ;
+    google.protobuf.Timestamp pa_first_subscribe_time = 14 ;
+    google.protobuf.Timestamp pa_last_subscribe_time = 15 ;
+    string pa_last_subscribe_scene = 16 ;
+    string pa_last_subscribe_scene_id = 17 ;
+    string union_id = 18;
+    uint32 cust_id = 19 ;
+  }
+}
+
+message GetCustEmInfoRsp{
+  string em_register_phone = 1;
+  string em_account_id = 2;
+  google.protobuf.Timestamp em_birthday = 3;
+  int32 em_gender = 4;
+  string em_contact_city = 5;
+  string em_contact_province = 6;
+  string em_contact_county = 7;
+  string em_contact_address = 8;
+  int32 em_contact_area_code = 9;
+  string em_avatar = 10;
+  string em_name = 11;
+  string em_remark = 12;
+  string union_id = 13;
+  string em_weixin_open_id = 14;
+  string em_user_id = 15;
+  string em_yz_open_id = 16;
+  int32 em_growth = 17;
+  int32 em_points = 18;
+  int32 em_traded_num = 19;
+  float em_traded_money = 20;
+  bool em_is_member = 21;
+  string em_outer_uid = 22;
+  string outer_id = 23;
+  uint32 cust_id = 24;
+}
+
+message GetCustMbInfoRsp{
+  string mb_open_id = 1;
+  int32 mb_member_id = 2;
+  string mb_bind_phone = 3;
+  google.protobuf.Timestamp  mb_bind_time = 4;
+  google.protobuf.Timestamp  mb_auth_time = 5;
+  google.protobuf.Timestamp  mb_bind_mobile_time = 6;
+  int32 mb_level = 8;
+  string mb_head_image_url = 9;
+  string mb_nick_name = 10;
+  int32 mb_sex = 11;
+  string mb_city = 12;
+  string mb_province = 13;
+  string mb_phone = 14;
+  string union_id = 15;
+  uint32 cust_id = 16;
+}
+
+message GetCustDzInfoRsp{
+  string dz_weixin_id = 1;
+  string dz_alias = 2;
+  string dz_nick_name = 3;
+  string dz_py_initial = 4;
+  string dz_quan_pin = 5;
+  string dz_thumb_head_url = 6;
+  string dz_cust_signature = 7;
+  string dz_cust_province = 8;
+  string dz_cust_city = 9;
+  string dz_cust_address = 10;
+  string dz_cust_head_url_hash = 11;
+  uint32 cust_id = 15;
+  repeated List list = 16;
+  message List{
+    string wx_id = 1;
+    int32 dz_account_id = 2;
+    string dz_name = 3;
+    google.protobuf.Timestamp dz_bind_time = 4;
+    string dz_con_remark = 5;
+    google.protobuf.Timestamp dz_first_contact_time = 6;
+    google.protobuf.Timestamp dz_last_contact_time = 7;
+    google.protobuf.Timestamp dz_last_reply_time = 8;
+    string dz_cust_phone = 9;
+    string dz_unbind_time = 10;
+  }
+}
+
+
+message GetCustSalesOwnerHistoryReq{
+  uint32 cust_id = 1;
+  string owner_from = 2;
+}
+
+message GetCustSalesOwnerHistoryRsp{
+  repeated List list = 1;
+  message List {
+    int32 owner_account_id = 1;
+    string owner_account_name = 2;
+    string owner_from = 3;
+    uint32 cust_id = 4;
+    google.protobuf.Timestamp  effective_start_time = 5;
+    google.protobuf.Timestamp  effective_end_time = 6;
+  }
+}
+
+message GetCustOrderRecordsReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 cust_id = 3;
+}
+
+message GetCustOrderRecordsRsp{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string tid = 1;
+    string shop_id = 2;
+    float total_amount = 3;
+    float pay_amount = 4;
+    string status = 5;
+    google.protobuf.Timestamp order_time = 6;
+    google.protobuf.Timestamp pay_time = 7;
+    string order_items = 8;
+    string delivery_address = 9;
+    uint32 cust_id = 10;
+  }
+}
+
+
+
+message GetCustActionRecordsReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 cust_id = 3;
+}
+message GetCustScanRecordsReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 cust_id = 3;
+}
+message GetCustActionRecordsRsp{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string action_type = 1;
+    string action_from = 2;
+    google.protobuf.Timestamp action_time = 3;
+    string action_value = 4;
+    string action_param = 5;
+    uint32 cust_id = 6;
+  }
+}
+message GetCustScanRecordsRsp{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string scan_qr_code_scene_id = 1;
+    int32 scan_type = 2;
+    google.protobuf.Timestamp scan_time = 3;
+    uint32 cust_id = 4;
+  }
+}
+message SyncHistoryInfoRsp {
+  bool success = 1;
+}
+
+message SetCustSalesOwnerReq{
+  int32 owner_account_id = 1;
+  string owner_account_name = 2;
+  string owner_from = 3;
+  uint32 cust_id = 4;
+}
+
+message SetCustSalesOwnerRsp{
+  bool success = 1;
+}
+
+message GetCustChannelInfoRsp{
+  uint32 cust_id = 1;
+  string union_id = 2;
+  string pa_open_id = 3 ;
+  bool pa_subscribed = 4 ;
+  google.protobuf.Timestamp pa_first_subscribe_time = 5 ;
+  google.protobuf.Timestamp pa_last_subscribe_time = 6 ;
+  string mb_open_id = 7;
+  string mb_bind_phone = 8;
+  google.protobuf.Timestamp  mb_bind_time = 9;
+  string dz_weixin_id = 10;
+  int32  owner_account_id = 11;
+  string owner_account_name = 12;
+}
+
+
+message GetCustBasicInfoRsp{
+  string head_image_url = 1;
+  string head_hash = 2;
+  string nick_name = 3;
+  int32  gender = 4;
+  string phone = 5;
+  string country = 6;
+  string province = 7;
+  string city = 8;
+  string district = 9;
+  string address = 10;
+  string birthday = 11;
+  string union_id = 12;
+  string created_by = 13;
+  int32  owner_account_id = 14;
+  string owner_account_name = 15;
+  string owner_from = 16;
+}
+
+
+
+message SearchCustRefundOrderRecordsReq {
+  uint32 page_index = 1;//页码
+  uint32 page_size = 2;//每页返回数量
+  repeated string card_aliases = 3;//会员卡类型
+  int32 is_wechat_friend = 4; //是否微信好友 0全部 1是 2不是
+  repeated int32 owner_account_ids = 5;//业绩归属账号ID
+  string status = 6;//售后单状态
+  google.protobuf.Timestamp apply_start_time = 7;//售后申请开始时间
+  google.protobuf.Timestamp apply_end_time = 8;//售后申请截止时间
+  google.protobuf.Timestamp finish_start_time = 9;//售后完成开始时间
+  google.protobuf.Timestamp finish_end_time = 10;//售后完成截止时间
+  string em_name = 11;//商城昵称
+  string tid = 12;//订单号
+  string outer_id = 13;//商城用户编号
+  string return_id = 14;//售后单号
+}
+
+message SearchCustRefundOrderRecordsRsp {
+  uint32 page_index = 1;//页码
+  uint32 page_size = 2;//每页返回数量
+  uint32 total = 3;//总条数
+  repeated List list = 4;
+  message List{
+    string tid = 1;//订单号
+    string return_id = 2;//售后单号
+    string  status = 3;//售后单状态
+    google.protobuf.Timestamp created = 5;//售后申请时间
+    google.protobuf.Timestamp success_time = 6;//售后完成时间
+    float total_refund_amt = 7;//总退款额(退款金额+退款余额)
+    int32 owner_account_id = 8;//业绩归属账号ID
+    string outer_id = 9;//商城用户编号
+    string em_name = 10;//商城昵称
+    int32 demand = 11;//售后单类型 1退货 2退物退货 3换货
+    float refund_fee = 12;// 退款金额
+    float refund_balance = 13;//退款余额
+  }
+
+}
+
+message SearchCustOrderRecordsReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  repeated string card_aliases = 3;//会员卡类型
+  int32 is_wechat_friend = 4; //是否微信好友 0全部 1是 2不是
+  repeated int32 owner_account_ids = 5;//业绩归属账号ID
+  string status = 6;//订单状态
+  google.protobuf.Timestamp order_start_time = 7;//订单创建开始时间
+  google.protobuf.Timestamp order_end_time = 8;//订单创建结束时间
+  google.protobuf.Timestamp payment_start_time = 9;//订单支付开始时间
+  google.protobuf.Timestamp payment_end_time = 10;//订单支付结束时间
+  uint32 cust_id = 11;//基础服务客户ID
+  string tid = 12;//订单号
+  string em_name = 13;//客户昵称
+  string outer_id = 14;//商城用户编号
+  string delivery_phone = 15;//收货人手机号（暂无）
+  string delivery_name = 16;//收货人名字（暂无）
+}
+
+message SearchCustOrderRecordsRsp{
+  uint32 page_index = 1;//页码
+  uint32 page_size = 2;//每页返回数量
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string tid = 1;//订单编号
+    string shop_id = 2;//商铺编号
+    float total_amount = 3;//订单总金额
+    float pay_amount = 4;//现金支付额
+    float balance_discount_amt = 5;//余额支付额
+    float total_payment = 6;//支付总额(pay_amount+balance_discount_amt)
+    string delivery_phone = 7;//收货人手机号（暂无）
+    string delivery_name = 8;//收货人名字（暂无）
+    int32 owner_account_id = 9;//业绩归属账号ID
+    string status = 10;
+    google.protobuf.Timestamp order_time = 11;
+    google.protobuf.Timestamp pay_time = 12;
+    string em_name = 13;//客户昵称
+    string outer_id = 14;//商城用户编号
+    string order_items = 15;//订单商品
+    string delivery_address = 16;
+    bool is_refund = 17;//是否有售后
+    float total_refund_amt = 18;//退款总金额
+    uint32 cust_id = 19;//基础服务客户ID
+    google.protobuf.Timestamp  refund_time = 20;//退款完成时间
+    google.protobuf.Timestamp  consign_time = 21;//发货时间
+  }
+
+}
+message GetCustOrderRefundDetailReq{
+  string return_id = 1; //售后单号
+}
+message GetCustOrderDetailReq{
+  string tid = 1;  //订单单号
+}
+message GetCustOrderRefundDetailRsp{
+  string tid = 1;//订单号
+  string return_id = 2;//售后单号
+  string  status = 3;//售后单状态
+  google.protobuf.Timestamp created = 5;//售后申请时间
+  google.protobuf.Timestamp success_time = 6;//售后完成时间
+  float total_refund_amt = 7;//总退款额(退款金额+退款余额)
+  int32 owner_account_id = 8;//业绩归属账号ID
+  string outer_id = 9;//商城用户编号
+  string em_name = 10;//商城昵称
+  int32 demand = 11;//售后单类型 1退货 2退物退货 3换货
+  float refund_fee = 12;// 退款金额
+  float refund_balance = 13;//退款余额
+}
+message GetCustOrderDetailRsp{
+  string tid = 1;//订单编号
+  string shop_id = 2;//商铺编号
+  float total_amount = 3;//订单总金额
+  float pay_amount = 4;//现金支付额
+  float balance_discount_amt = 5;//余额支付额
+  float total_payment = 6;//支付总额(pay_amount+balance_discount_amt)
+  string delivery_phone = 7;//收货人手机号（暂无）
+  string delivery_name = 8;//收货人名字（暂无）
+  int32 owner_account_id = 9;//业绩归属账号ID
+  string status = 10;
+  google.protobuf.Timestamp order_time = 11;
+  google.protobuf.Timestamp pay_time = 12;
+  string em_name = 13;//客户昵称
+  string outer_id = 14;//商城用户编号
+  string order_items = 15;//订单商品
+  string delivery_address = 16;
+  bool is_refund = 17;//是否有售后
+  float total_refund_amt = 18;//退款总金额
+  uint32 cust_id = 19;//基础服务客户ID
+  google.protobuf.Timestamp  refund_time = 20;//退款完成时间
+  google.protobuf.Timestamp  consign_time = 21;//发货时间
+}
+message GetPerformanceOrderRecordsReq{
+  uint32 page_index = 1;
+  uint32 page_size = 2;
+  int32 demand = 3;//售后单类型 1退货 2退物退货 3换货
+  repeated int32 owner_account_ids = 5;//业绩归属账号ID
+  google.protobuf.Timestamp start_time = 7;//订单创建开始时间
+  google.protobuf.Timestamp end_time = 8;//订单创建结束时间
+}
+message GetPerformanceRefundOrderRecordsRsp{
+  uint32 page_index = 1;//页码
+  uint32 page_size = 2;//每页返回数量
+  uint32 total = 3;//总条数
+  repeated List list = 4;
+  message List{
+    string tid = 1;//订单号
+    string return_id = 2;//售后单号
+    string  status = 3;//售后单状态
+    google.protobuf.Timestamp created = 5;//售后申请时间
+    google.protobuf.Timestamp success_time = 6;//售后完成时间
+    float total_refund_amt = 7;//总退款额(退款金额+退款余额)
+    string outer_id = 9;//商城用户编号
+    string em_name = 10;//商城昵称
+    int32 demand = 11;//售后单类型 1退货 2退物退货 3换货
+    float refund_fee = 12;// 退款金额
+    float refund_balance = 13;//退款余额
+    string owner_account_id = 14;//店长id
+    string owner_account_name = 15;//店长名
+  }
+}
+message GetPerformanceOrderRecordsRsp{
+  uint32 page_index = 1;//页码
+  uint32 page_size = 2;//每页返回数量
+  uint32 total = 3;
+  repeated List list = 4;
+  message List{
+    string tid = 1;//订单编号
+    float total_amount = 2;//订单总金额
+    float pay_amount = 3;//现金支付额
+    float balance_discount_amount = 4;//余额支付额
+    float total_payment = 5;//支付总额(pay_amount+balance_discount_amt)
+    string status = 6;
+    google.protobuf.Timestamp order_time = 7;
+    google.protobuf.Timestamp pay_time = 8;
+    string em_name = 9;//客户昵称
+    string outer_id = 10;//商城用户编号
+    string owner_account_id = 11;//店长id
+    string owner_account_name = 12;//店长名
+  }
+}
+message GetPerformanceSumDataRsp{
+  repeated List list = 4;
+  message List{
+    uint32 total_count = 1;
+    string owner_account_id = 2;
+    float total_payment = 3;
+  }
+
+}
+
+message ModifyPerformanceOrderOwnerReq {
+  repeated string tid = 1; // 订单号
+  int32 owner_account_id = 2; // 业绩归属店长ID
+  int32 last_modified_by = 3; // 修改人ID
+}
+
+message ModifyPerformanceOrderOwnerRsp {
+  repeated Result result = 4;
+  message Result {
+    string tid = 1; // 订单编号
+    bool is_success = 2; // 是否成功
+    string error_msg = 3; // 错误信息
+  }
+}

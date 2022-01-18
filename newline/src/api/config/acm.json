@@ -1,0 +1,19 @@
+{
+  "config": {
+    "Endpoint": "acm.aliyun.com:8080",
+    "NamespaceId": "",
+    "AccessKey": "",
+    "SecretKey": "",
+    "TimeoutMs": 6000
+  },
+  "configPath": {
+    "staging": {
+      "dataId": "DATA_ID",
+      "group": "DEFAULT_GROUP"
+    },
+    "production": {
+      "dataId": "DATA_ID",
+      "group": "DEFAULT_GROUP"
+    }
+  }
+}

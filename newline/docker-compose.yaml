@@ -1,0 +1,29 @@
+version: "3"
+services:
+  customer_{tenant}:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/srv/customer/Dockerfile
+  data_{tenant}:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/srv/data/Dockerfile
+  validation_{tenant}:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/srv/validation/Dockerfile
+  product_{tenant}:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/srv/product/Dockerfile
+  web:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/gateway/central/Dockerfile
+    ports:
+    - "8082:8082"

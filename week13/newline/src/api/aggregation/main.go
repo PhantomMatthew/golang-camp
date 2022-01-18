@@ -1,26 +1,26 @@
 package main
 
 import (
-	"aizinger.com/newline/src/common/log"
-	"aizinger.com/newline/src/common/utils"
 	"context"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/v2/client"
 	_ "github.com/micro/go-micro/v2/config"
 	"go.uber.org/zap"
+	"newline.com/newline/src/common/log"
+	"newline.com/newline/src/common/utils"
 
 	//"github.com/sirupsen/logrus"
 	"github.com/wantg/armory"
 	"math/rand"
 	"time"
 
-	"aizinger.com/dzzs/docs"
-	"aizinger.com/dzzs/reactors"
-	config "aizinger.com/newline/src/common/config"
-	customer "aizinger.com/newline/src/srv/customer/proto/customer"
-	datavalidation "aizinger.com/newline/src/srv/validation/proto/datavalidation"
 	"github.com/micro/go-micro/v2/web"
+	"newline.com/dzzs/docs"
+	"newline.com/dzzs/reactors"
+	config "newline.com/newline/src/common/config"
+	customer "newline.com/newline/src/srv/customer/proto/customer"
+	datavalidation "newline.com/newline/src/srv/validation/proto/datavalidation"
 )
 
 var (

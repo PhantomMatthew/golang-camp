@@ -1,18 +1,18 @@
 package reactors
 
 import (
-	mail "aizinger.com/newline/src/common/mail"
-	sms "aizinger.com/newline/src/common/sms"
+	mail "newline.com/newline/src/common/mail"
+	sms "newline.com/newline/src/common/sms"
 	"time"
 
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
 
-	cache "aizinger.com/newline/src/common/cache"
-	config "aizinger.com/newline/src/common/config"
-	database "aizinger.com/newline/src/common/database"
-	"aizinger.com/newline/src/common/log"
 	"moul.io/zapgorm"
+	cache "newline.com/newline/src/common/cache"
+	config "newline.com/newline/src/common/config"
+	database "newline.com/newline/src/common/database"
+	"newline.com/newline/src/common/log"
 )
 
 var serviceName string

@@ -1,4 +1,4 @@
-module aizinger.com/dzzs
+module newline.com/dzzs
 
 go 1.13
 

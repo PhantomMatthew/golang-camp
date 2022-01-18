@@ -1,7 +1,7 @@
 package routers
 
 //import (
-//	customer "aizinger.com/customer/srv/proto/customer"
+//	customer "newline.com/customer/srv/proto/customer"
 //	"context"
 //	"github.com/gin-gonic/gin"
 //	"github.com/sirupsen/logrus"

@@ -32,7 +32,7 @@ type CustBasicInfo struct {
 	District         string `json:"district" gorm:"type:varchar(50);"        comment:"区"`
 	Address          string `json:"address" gorm:"type:varchar(500);"       comment:"详细地址"`
 	Birthday         string `json:"birthday" gorm:"type:varchar(50);"     comment:"出生日期"`
-	UnionId          string `json:"union_id" gorm:"size:255;not null;unique_index;"      comment:"微信开放平台的唯一身份标识"`
+	UnionId          string `json:"union_id" gorm:"size:255;not null;unique_index;"      comment:"开放平台的唯一身份标识"`
 	CreatedBy        string `json:"created_by" gorm:"size:10;"        comment:"用户创建渠道"`
 	UpdatedBy        string `json:"updated_by" gorm:"size:10;"        comment:"用户创建渠道"`
 	OwnerAccountId   int32  `json:"owner_account_id"  comment:"归属账户ID"`

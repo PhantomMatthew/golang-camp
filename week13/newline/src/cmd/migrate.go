@@ -119,20 +119,7 @@ func main() {
 
 	modelList := []interface{}{
 		model.CustBasicInfo{},
-		model.CustPaInfo{},
-		model.CustActionRecord{},
-		model.CustOrderRecord{},
-		model.CustOrderDetailRecord{},
-		model.CustOrderRight{},
-		model.CustOrderOwner{},
-		model.CustScanRecord{},
-		model.CustTagInfo{},
-		model.CustCardInfo{},
-		model.CustMbInfo{},
-		model.CustEmInfo{},
-		model.CustDzInfo{},
-		model.CustDzRelationInfo{},
-		model.CustOwnerHistory{},
+
 	}
 	//fmt.Println("33")
 	logger.Info("Start Auto Migration")
@@ -142,21 +129,6 @@ func main() {
 	if db.Error != nil {
 		logger.Error("DB error", zap.Error(db.Error))
 	}
-
-	mainDB.Model(&model.CustPaInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustEmInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustMbInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustTagInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustCardInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustOrderRecord{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustOrderDetailRecord{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustOrderOwner{}).AddForeignKey("t_id", "cust_order_record(t_id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustOrderRight{}).AddForeignKey("t_id", "cust_order_record(t_id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustOrderRight{}).AddForeignKey("o_id", "cust_order_detail_record(o_id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustActionRecord{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustScanRecord{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustDzInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
-	mainDB.Model(&model.CustDzRelationInfo{}).AddForeignKey("cust_id", "cust_basic_info(id)", "RESTRICT", "RESTRICT")
 
 	logger.Info("Start Setup Comments")
 	setupComments(modelList...)

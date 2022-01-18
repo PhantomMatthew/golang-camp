@@ -17,7 +17,7 @@ func ReqWithAuth(method, url string, params string) ([]byte, error) {
 	//
 	//}
 
-	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibWljX3dlY2hhdCIsInBvcnQiOjMwMDQsImlhdCI6MTU2NjQ0NjQ4OSwiZXhwIjo0NzIyMjA2NDg5fQ.MqAq3BZu0n2hCRMs1hw0Zd6DPSRd0yHzoXJTFhJuoM0")
+	req.Header.Set("Authorization", "Bearer ")
 	resp, err := client.Do(req)
 
 	defer resp.Body.Close()
